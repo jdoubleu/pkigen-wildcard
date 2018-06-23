@@ -100,4 +100,4 @@ cd $BUILD_DIR
 mkdir export/
 
 cp $CA_BASE/certs/*.pem export/
-cp $CA_BASE/private/${DOMAIN_SLUGGED}.key
+cp $CA_BASE/private/${DOMAIN_SLUGGED}.key export/
