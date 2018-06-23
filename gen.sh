@@ -82,3 +82,10 @@ openssl ca -config $OPENSSL_CONFIG \
     -in csr/${DOMAIN_SLUGGED}.csr \
     -out certs/${DOMAIN_SLUGGED}.pem
 chmod 444 certs/${DOMAIN_SLUGGED}.pem
+
+:: "Preparing export"
+cd $BUILD_DIR
+mkdir export/
+
+cp $CA_BASE/certs/*.pem export/
+cp $CA_BASE/private/${DOMAIN_SLUGGED}.key
