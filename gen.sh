@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Generate PKI with leaf certificates
+set -e
 
 # Log function
 :: ()
@@ -7,9 +8,8 @@
     echo -e "\033[36m#\033[0m \033[1;36m$*\033[0m"
 }
 
-set -e
-
 # Vars
+VERBOSE=""
 BASE=$PWD
 BUILD_DIR=$PWD/build
 OPENSSL_CONFIG=$BASE/files/openssl.cnf
@@ -26,10 +26,20 @@ while [ "$#" -gt 0 ]; do
             NAME="$2"
             shift
             ;;
+        --verbose)
+            VERBOSE=1
+            set -x
+            ;;
+        *)
+            NAME="$1"
+            DOMAIN="$2"
+            shift
+            ;;
     esac
     shift
 done
 
+# Setup
 DOMAIN_SLUGGED=$(echo $DOMAIN | sed s/\\./_/g)
 
 :: "Preparing directory structure"
