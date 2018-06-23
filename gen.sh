@@ -49,8 +49,9 @@ DOMAIN_SLUGGED=$(echo $DOMAIN | sed s/\\./_/g)
 
 :: "Preparing directory structure"
 # cleanup first
+rm -rf $BUILD_DIR
+
 CA_BASE=$BUILD_DIR/ca
-rm -rf $CA_BASE
 mkdir -p $CA_BASE
 cd $CA_BASE
 mkdir certs csr newcerts private
