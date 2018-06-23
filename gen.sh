@@ -38,7 +38,7 @@ CA_BASE=$BUILD_DIR/ca
 rm -rf $CA_BASE
 mkdir -p $CA_BASE
 cd $CA_BASE
-mkdir certs crl csr newcerts private
+mkdir certs csr newcerts private
 chmod 700 private
 touch index.txt
 echo 1000 > serial
