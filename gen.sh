@@ -32,7 +32,7 @@ done
 
 DOMAIN_SLUGGED=$(echo $DOMAIN | sed s/\\./_/g)
 
-:: "Creating Root CA"
+:: "Preparing directory structure"
 # cleanup first
 CA_BASE=$BUILD_DIR/ca
 rm -rf $CA_BASE
@@ -43,11 +43,11 @@ chmod 700 private
 touch index.txt
 echo 1000 > serial
 
-:: "Create CA key"
+:: "CA: creating key"
 openssl genrsa -out private/ca.key.pem 2048
 chmod 400 private/ca.key.pem
 
-:: "Create CA certificate"
+:: "CA: creating certificate"
 openssl req -config $OPENSSL_CONFIG \
     -key private/ca.key.pem \
     -new -x509 -days 3650 -sha256 -extensions v3_ca \
@@ -55,18 +55,18 @@ openssl req -config $OPENSSL_CONFIG \
     -out certs/ca.cert.pem
 chmod 444 certs/ca.cert.pem
 
-:: "Create SSL certificate private key"
+:: "Server: creating private key"
 openssl genrsa -out private/${DOMAIN_SLUGGED}.key 2048
 chmod 400 private/${DOMAIN_SLUGGED}.key
 
-:: " > Create SSL certificate CSR"
+:: "Server: creating certificate signing request"
 openssl req -config $OPENSSL_CONFIG \
     -key private/${DOMAIN_SLUGGED}.key \
     -new -sha256 \
     -subj "/CN=*.${DOMAIN}" \
     -out csr/${DOMAIN_SLUGGED}.csr.pem
 
-:: " Sign SSL certificate CSR"
+:: "CA: signing server certificate"
 openssl ca -config $OPENSSL_CONFIG \
     -extensions server_cert -batch -days 2830 -notext -md sha256 \
     -in csr/${DOMAIN_SLUGGED}.csr.pem \
