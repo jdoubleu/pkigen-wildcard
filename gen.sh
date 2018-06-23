@@ -92,12 +92,12 @@ openssl req -config $OPENSSL_CONFIG \
 openssl ca -config $OPENSSL_CONFIG \
     -extensions server_cert -batch -days 2830 -notext -md sha256 \
     -in csr/${DOMAIN_SLUGGED}.csr \
-    -out certs/${DOMAIN_SLUGGED}.pem
-chmod 444 certs/${DOMAIN_SLUGGED}.pem
+    -out certs/${DOMAIN_SLUGGED}.crt
+chmod 444 certs/${DOMAIN_SLUGGED}.crt
 
 :: "Preparing export"
 cd $BUILD_DIR
 mkdir export/
 
-cp $CA_BASE/certs/*.pem export/
+cp $CA_BASE/certs/*.crt export/
 cp $CA_BASE/private/${DOMAIN_SLUGGED}.key export/
