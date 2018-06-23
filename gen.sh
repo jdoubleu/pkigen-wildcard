@@ -12,7 +12,6 @@ set -e
 VERBOSE=""
 BASE=$PWD
 BUILD_DIR=$PWD/build
-OPENSSL_CONFIG=$BASE/files/openssl.cnf
 
 # Read input
 while [ "$#" -gt 0 ]; do
@@ -58,6 +57,12 @@ mkdir certs csr newcerts private
 chmod 700 private
 touch index.txt
 echo 1000 > serial
+
+sed \
+    -e "s/%DOMAIN_BASE%/${DOMAIN}/" \
+    -e "s/%DOMAIN_WILDCARD%/*.${DOMAIN}/" \
+    $BASE/files/openssl.cnf.tmpl > $BUILD_DIR/openssl.cnf
+OPENSSL_CONFIG=$BUILD_DIR/openssl.cnf
 
 :: "CA: creating key"
 openssl genrsa -out private/ca.key 2048

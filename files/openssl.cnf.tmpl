@@ -68,3 +68,8 @@ subjectKeyIdentifier = hash
 authorityKeyIdentifier = keyid,issuer:always
 keyUsage = critical, digitalSignature, keyEncipherment
 extendedKeyUsage = serverAuth
+subjectAltName       = @server_alternate_names
+
+[ server_alternate_names ]
+DNS.1  = %DOMAIN_BASE%
+DNS.2  = %DOMAIN_WILDCARD%
