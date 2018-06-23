@@ -39,6 +39,12 @@ while [ "$#" -gt 0 ]; do
     shift
 done
 
+# Check
+if [[ -z "$DOMAIN" || -z "$NAME" ]]; then
+    :: "No DOMAIN or NAME given!"
+    exit 1
+fi
+
 # Setup
 DOMAIN_SLUGGED=$(echo $DOMAIN | sed s/\\./_/g)
 
