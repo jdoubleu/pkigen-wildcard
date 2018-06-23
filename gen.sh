@@ -54,16 +54,16 @@ touch index.txt
 echo 1000 > serial
 
 :: "CA: creating key"
-openssl genrsa -out private/ca.key.pem 2048
-chmod 400 private/ca.key.pem
+openssl genrsa -out private/ca.key 2048
+chmod 400 private/ca.key
 
 :: "CA: creating certificate"
 openssl req -config $OPENSSL_CONFIG \
-    -key private/ca.key.pem \
+    -key private/ca.key \
     -new -x509 -days 3650 -sha256 -extensions v3_ca \
-    -subj "/CN=${NAME} Root CA" \
-    -out certs/ca.cert.pem
-chmod 444 certs/ca.cert.pem
+    -subj "/CN=${NAME} Development CA" \
+    -out certs/ca.pem
+chmod 444 certs/ca.pem
 
 :: "Server: creating private key"
 openssl genrsa -out private/${DOMAIN_SLUGGED}.key 2048
@@ -74,11 +74,11 @@ openssl req -config $OPENSSL_CONFIG \
     -key private/${DOMAIN_SLUGGED}.key \
     -new -sha256 \
     -subj "/CN=*.${DOMAIN}" \
-    -out csr/${DOMAIN_SLUGGED}.csr.pem
+    -out csr/${DOMAIN_SLUGGED}.csr
 
 :: "CA: signing server certificate"
 openssl ca -config $OPENSSL_CONFIG \
     -extensions server_cert -batch -days 2830 -notext -md sha256 \
-    -in csr/${DOMAIN_SLUGGED}.csr.pem \
-    -out certs/${DOMAIN_SLUGGED}.crt
-chmod 444 certs/${DOMAIN_SLUGGED}.crt
+    -in csr/${DOMAIN_SLUGGED}.csr \
+    -out certs/${DOMAIN_SLUGGED}.pem
+chmod 444 certs/${DOMAIN_SLUGGED}.pem
